@@ -152,7 +152,7 @@ ggplot(data = graph.data.long[graph.data.long$ID %in% sample(1:N, size = 9),])+
 ## simulate time-to-event outcomes with some rate of censoring
 ## covariates: standardized random effects and residual variances
 sim_surv_data <- function(N, b_rm1, b_rm2, var_sq1, var_sq2, alpha, eta,
-                         marker1, marker2, marker_lc){
+                          marker1, marker2, marker_lc){
   ## standardize random effects
   ## first biomarker
   b11_standard <- (b_rm1[,1]-0)/sigma_b1[1]
@@ -185,7 +185,7 @@ sim_surv_data <- function(N, b_rm1, b_rm2, var_sq1, var_sq2, alpha, eta,
   }
 
   ## simulate event times from threshold regression (inverse-Gaussian distribution)
-  event_time <- rinvgauss(N, mean = -y_0/mu, shape = y_0^2)
+  event_time <- rinvgauss(N, mean = -y_0/zeta, shape = y_0^2)
   ## simulate censoring times from an independent exponential distribution
   censor_time <- 4+rexp(N, rate = 1/14)
   ## determine observed event times and censoring status
@@ -193,7 +193,7 @@ sim_surv_data <- function(N, b_rm1, b_rm2, var_sq1, var_sq2, alpha, eta,
                          event_time, censor_time)
   status <- ifelse(event_time <= censor_time,
                    1, 0)
-  test_data <- data.frame(observe_time, status, y_0, mu, 
+  test_data <- data.frame(observe_time, status, y_0, zeta, 
                           b11_standard, b12_standard,
                           var_sq1_standard,
                           b21_standard, b22_standard,
