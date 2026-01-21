@@ -207,7 +207,12 @@ surv_biomarker_data <- sim_surv_data(N = N, b_rm1 = b_rm1, b_rm2 = b_rm2,
                                      alpha = alpha, eta = eta,
                                      marker1 = marker1, marker2 = marker2,
                                      marker_lc = marker_lc)
-surv_biomarker_data <- na.omit(surv_data)
+surv_biomarker_data <- na.omit(surv_biomarker_data)
+
+table(surv_biomarker_data$status)
+lc_rate <- mean(surv_biomarker_data$status==0)
+print(lc_rate)
+save(lc_rate, file = paste0(k, ".result/lc_rate.Rdata"))
 
 save(surv_biomarker_data, file = paste0(k, ".result/surv_biomarker_data.Rdata"))
 
