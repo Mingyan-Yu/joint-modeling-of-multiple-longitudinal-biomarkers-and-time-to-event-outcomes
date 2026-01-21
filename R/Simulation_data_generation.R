@@ -151,8 +151,7 @@ ggplot(data = graph.data.long[graph.data.long$ID %in% sample(1:N, size = 9),])+
 
 ## simulate time-to-event outcomes with some rate of censoring
 ## covariates: standardized random effects and residual variances
-sim_surv_data <- function(N, b_rm1, b_rm2, var_sq1, var_sq2, alpha, eta,
-                          marker1, marker2, marker_lc){
+sim_surv_data <- function(N, b_rm1, b_rm2, var_sq1, var_sq2, alpha, eta){
   ## standardize random effects
   ## first biomarker
   b11_standard <- (b_rm1[,1]-0)/sigma_b1[1]
@@ -202,30 +201,34 @@ sim_surv_data <- function(N, b_rm1, b_rm2, var_sq1, var_sq2, alpha, eta,
   return(test_data)
 }
 
-surv_biomarker_data <- sim_surv_data(N = N, b_rm1 = b_rm1, b_rm2 = b_rm2,
-                                     var_sq1 = var_sq1, var_sq2 = var_sq2,
-                                     alpha = alpha, eta = eta,
-                                     marker1 = marker1, marker2 = marker2,
-                                     marker_lc = marker_lc)
+surv_data <- sim_surv_data(N = N, b_rm1 = b_rm1, b_rm2 = b_rm2,
+                           var_sq1 = var_sq1, var_sq2 = var_sq2,
+                           alpha = alpha, eta = eta)
 
 ## check which row has NAs in it, most cases should have no NAs
-na_row <- apply(surv_biomarker_data, 1, function(row) any(is.na(row)))
+na_row <- apply(surv_data, 1, function(row) any(is.na(row)))
 na_row <- as.numeric(na_row)
 sum(na_row)
 data_ind <- which(na_row!=1)
                 
-surv_biomarker_data <- surv_biomarker_data[data_ind,]
+surv_data <- surv_data[data_ind,]
 t <- t[data_ind,]
 n <- n[data_ind]
-
+marker1 <- marker1[data_ind,]
+marker2 <- marker2[data_ind,]
+marker_lc <- marker_lc[data_ind,]
+                
 table(surv_biomarker_data$status)
 lc_rate <- mean(surv_biomarker_data$status==0)
 print(lc_rate)
 save(lc_rate, file = paste0(k, ".result/lc_rate.Rdata"))
 
-save(surv_biomarker_data, file = paste0(k, ".result/surv_biomarker_data.Rdata"))
+save(surv_data, file = paste0(k, ".result/surv_data.Rdata"))
 save(t, file = paste0(k, ".result/t.Rdata"))
 save(n, file = paste0(k, ".result/n.Rdata"))
+save(marker1, file = paste0(k, ".result/marker1.Rdata"))
+save(marker2, file = paste0(k, ".result/marker2.Rdata"))
+save(marker_lc, file = paste0(k, ".result/marker_lc.Rdata"))
 
 
 
