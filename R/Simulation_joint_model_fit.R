@@ -18,3 +18,6 @@ set.seed(20251210+as.numeric(k)*100)
 cl <- makeCluster(3)
 
 ## load simulated data
+load(paste0(k, ".result/LOD.Rdata"))
+load(paste0(k, ".result/surv_biomarker_data.Rdata"))
+
