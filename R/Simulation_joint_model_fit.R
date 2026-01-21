@@ -302,7 +302,7 @@ joint_inits$marker2 <- ifelse(is.na(marker_lc), LOD-1, NA)
 
 joint_inits$alpha <- rnorm(n = 7, mean = 0, sd = 0.5)
 joint_inits$eta <- rnorm(n = 7, mean = 0, sd = 0.5)
-## for right-censoring event times, specify the initial values for imputation as censoring time + 2
+## for right-censored event times, specify the initial values for imputation as censoring time + 2
 joint_inits$t <- rep(NA, joint_constants$N)
 joint_inits$t[joint_data$censored_event==1] <- joint_constants$c[joint_data$censored_event==1] + 2
 
