@@ -207,7 +207,16 @@ surv_biomarker_data <- sim_surv_data(N = N, b_rm1 = b_rm1, b_rm2 = b_rm2,
                                      alpha = alpha, eta = eta,
                                      marker1 = marker1, marker2 = marker2,
                                      marker_lc = marker_lc)
-surv_biomarker_data <- na.omit(surv_biomarker_data)
+
+## check which row has NAs in it, most cases should have no NAs
+na_row <- apply(surv_biomarker_data, 1, function(row) any(is.na(row)))
+na_row <- as.numeric(na_row)
+sum(na_row)
+data_ind <- which(na_row!=1)
+                
+surv_biomarker_data <- surv_biomarker_data[data_ind,]
+t <- t[data_ind,]
+n <- n[data_ind]
 
 table(surv_biomarker_data$status)
 lc_rate <- mean(surv_biomarker_data$status==0)
@@ -215,6 +224,8 @@ print(lc_rate)
 save(lc_rate, file = paste0(k, ".result/lc_rate.Rdata"))
 
 save(surv_biomarker_data, file = paste0(k, ".result/surv_biomarker_data.Rdata"))
+save(t, file = paste0(k, ".result/t.Rdata"))
+save(n, file = paste0(k, ".result/n.Rdata"))
 
 
 
