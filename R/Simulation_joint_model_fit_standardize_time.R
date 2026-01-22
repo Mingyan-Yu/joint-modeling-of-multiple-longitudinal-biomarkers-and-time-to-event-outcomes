@@ -230,8 +230,8 @@ censored_marker[] <- as.numeric(!is.na(marker_lc))
 
 joint_data <- list(marker1 = marker1, marker2 = marker_lc,
                    censored_marker = censored_marker,
-                   censored_event = as.numeric(test_data$status==0),
-                   t = ifelse(test_data$status==1, test_data$observe_time, NA))  ## turn right-censored event times into NA
+                   censored_event = as.numeric(surv_data$status==0),
+                   t = ifelse(surv_data$status==1, surv_data$observe_time, NA))  ## turn right-censored event times into NA
 save(joint_data, file = paste0(k, ".result/joint_data.Rdata"))
 
 ## standardize measurement time
@@ -241,7 +241,7 @@ t_std = (t-mean_t)/sd_t
 
 ## construct constants for fitting the joint model
 joint_constants <- list(N = N, n = n, time = t_std, LOD = LOD,
-                        c = ifelse(test_data$status==1, Inf, test_data$observe_time),
+                        c = ifelse(surv_data$status==1, Inf, surv_data$observe_time),
                         mean_t = mean_t, sd_t = sd_t) ## c: right-censoring time
 save(joint_constants, file = paste0(k, ".result/joint_constants.Rdata"))
 
