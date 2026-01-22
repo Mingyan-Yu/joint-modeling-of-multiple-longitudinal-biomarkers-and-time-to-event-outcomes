@@ -147,11 +147,11 @@ threg_nimble <- nimbleCode({
 threg_data <- list()
 threg_data$censored <- as.numeric(surv_data$status==0)
 ## turn right-censored event times into NA
-threg_data$t <- ifelse(test_data$status==1, test_data$observe_time, NA)
+threg_data$t <- ifelse(surv_data$status==1, surv_data$observe_time, NA)
 
 ## construct constants for fitting threshold regression
 threg_constants <- list()
-threg_constants$c <- ifelse(test_data$status==1, Inf, test_data$observe_time)
+threg_constants$c <- ifelse(surv_data$status==1, Inf, surv_data$observe_time)
 threg_constants$N <- N
 threg_constants$biomarker_predictor <- biomarker_predictors
 
