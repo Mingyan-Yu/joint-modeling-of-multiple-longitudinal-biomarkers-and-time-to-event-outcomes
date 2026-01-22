@@ -430,7 +430,7 @@ for(i in 1:3){
 }
 
 ## make a traceplot of the posterior samples
-pdf(paste0(k, ".result/traceplot.pdf"))
+pdf("traceplot.pdf")
 coda::traceplot(mcmc.list(mcmc(chain_output[[1]]$samples[,grep("^beta1_ori",col)]),
                           mcmc(chain_output[[2]]$samples[,grep("^beta1_ori",col)]),
                           mcmc(chain_output[[3]]$samples[,grep("^beta1_ori",col)])))
